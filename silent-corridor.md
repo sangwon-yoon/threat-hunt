@@ -4,7 +4,7 @@ BfV (German federal intelligence) has issued a confidential advisory to defence 
 
 Haldric Aerospace is a Tier 2 defence contractor specialising in avionics navigation systems for European military programmes. Engineering staff work from a dedicated network segment with remote access via SSL VPN. The company employs approximately 200 staff across three sites.
 
-```
+```kql
 let HuntData = SilentCorridorX_CL
 | where isnotempty(EventTime)
 | where TimeGenerated > datetime(2026-04-07T14:00:00Z)
