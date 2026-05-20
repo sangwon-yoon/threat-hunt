@@ -19,7 +19,7 @@ let HuntData = SilentCorridorX_CL
 
 ### 1. Suspicious Account
 
-The previous victims were compromised through remote access infrastructure. Comparing authentication volumes across all VPN accounts reveals that the account s.brandt has an unusually large amount of logs.
+The previous victims were compromised through remote access infrastructure. Comparing authentication volumes across all VPN accounts revealed that the account s.brandt has an unusually large amount of logs.
 
 ```kql
 HuntData
