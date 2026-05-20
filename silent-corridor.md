@@ -30,6 +30,7 @@ HuntData
 
 <img width="259" height="114" alt="Screenshot 2026-05-19 175909" src="https://github.com/user-attachments/assets/96ba16cd-c0b0-4987-8af9-277dfd445600" />
 
+
 ### 2. Origin of Failed Auth
 
 s.brandt's authentication logs show that it failed authentication when accessing from the IP `182.220.101.34`.
@@ -43,11 +44,34 @@ HuntData
 
 <img width="587" height="189" alt="Screenshot 2026-05-19 181001" src="https://github.com/user-attachments/assets/7defd96b-7044-40aa-9a96-5547d11729a0" />
 
+
 ### 3. Connection Footprint
+
+```kql
+HuntData
+| where MdeTable == "FortiGateVPN"
+| where AccountName == "s.brandt"
+| summarize dcount(RemoteIP)
+```
+
+<img width="119" height="53" alt="Screenshot 2026-05-19 190928" src="https://github.com/user-attachments/assets/6172ebbb-3071-44af-8f4f-80a8deda640c" />
 
 ### 4. Source Address Inventory
 
+```kql
+HuntData
+| where MdeTable == "FortiGateVPN"
+| where AccountName == "s.brandt"
+| distinct RemoteIP
+```
+
+
+<img width="136" height="133" alt="Screenshot 2026-05-19 191712" src="https://github.com/user-attachments/assets/12688473-9757-4e07-a794-f2c8fb21dd34" />
+
 ### 5. Internal Landing Point
+
+<img width="132" height="68" alt="Screenshot 2026-05-19 191811" src="https://github.com/user-attachments/assets/55c3bf1f-a33c-416b-9045-cadd61b82280" />
+
 
 ### 6. Initial Process
 
