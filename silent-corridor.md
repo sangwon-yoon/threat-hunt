@@ -70,6 +70,13 @@ HuntData
 
 ### 5. Internal Landing Point
 
+```kql
+HuntData
+| where MdeTable == "FortiGateVPN"
+| where AccountName == "s.brandt"
+| distinct DestinationHost
+```
+
 <img width="132" height="68" alt="Screenshot 2026-05-19 191811" src="https://github.com/user-attachments/assets/55c3bf1f-a33c-416b-9045-cadd61b82280" />
 
 
