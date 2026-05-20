@@ -8,6 +8,8 @@ Haldric Aerospace is a Tier 2 defence contractor specialising in avionics naviga
 
 ### 0. Environment Access
 
+This is the base filter used at the top of every query.
+
 ```kql
 let HuntData = SilentCorridorX_CL
 | where isnotempty(EventTime)
@@ -17,12 +19,16 @@ let HuntData = SilentCorridorX_CL
 
 ### 1. Suspicious Account
 
-```
+The previous victims were compromised through remote access infrastructure. Comparing authentication volumes across all VPN accounts reveals that the account s.brandt has an unusually large amount of logs.
+
+```kql
 HuntData
-| where AccountName == "m.richter"
-| where DeviceName == "SRV-FILES02"
-| where MdeTable == "DeviceProcessEvents"
+| where MdeTable == "FortiGateVPN"
+| summarize count() by AccountName
+| sort by count_ desc 
 ```
+
+<img width="259" height="114" alt="Screenshot 2026-05-19 175909" src="https://github.com/user-attachments/assets/96ba16cd-c0b0-4987-8af9-277dfd445600" />
 
 ### 2. Origin of Failed Auth
 
