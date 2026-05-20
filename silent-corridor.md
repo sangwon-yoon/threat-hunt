@@ -19,7 +19,7 @@ let HuntData = SilentCorridorX_CL
 
 ### 1. Suspicious Account
 
-The previous victims were compromised through remote access infrastructure. Comparing authentication volumes across all VPN accounts revealed that the account s.brandt has an unusually large amount of logs.
+The account `s.brandt` had an unusually large number of remote access logs.
 
 ```kql
 HuntData
@@ -31,6 +31,17 @@ HuntData
 <img width="259" height="114" alt="Screenshot 2026-05-19 175909" src="https://github.com/user-attachments/assets/96ba16cd-c0b0-4987-8af9-277dfd445600" />
 
 ### 2. Origin of Failed Auth
+
+s.brandt's authentication logs show that it failed authentication when accessing from the IP `182.220.101.34`.
+
+```kql
+HuntData
+| where MdeTable == "FortiGateVPN"
+| where AccountName == "s.brandt"
+| project EventTime, Message, RemoteIP
+```
+
+<img width="587" height="189" alt="Screenshot 2026-05-19 181001" src="https://github.com/user-attachments/assets/7defd96b-7044-40aa-9a96-5547d11729a0" />
 
 ### 3. Connection Footprint
 
