@@ -82,9 +82,45 @@ HuntData
 
 ### 6. Initial Process
 
+Pivoting to beachhead and checking the first non-routine process under `s-brandt`'s session.
+
+```kql
+HuntData
+| where MdeTable == "DeviceProcessEvents"
+| where AccountName == "s.brandt"
+| project EventTime, FileName, InitiatingProcessFileName
+```
+
+<img width="613" height="139" alt="Screenshot 2026-05-21 092007" src="https://github.com/user-attachments/assets/3283fe7f-b175-442d-862f-d1554c1c13a6" />
+
+
 ### 7. Directory Enumeration
 
+Checking for AD enumeration commands.
+
+```kql
+HuntData
+| where MdeTable == "DeviceProcessEvents"
+| where AccountName == "s.brandt"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="570" height="218" alt="Screenshot 2026-05-21 092317" src="https://github.com/user-attachments/assets/961878ad-34ca-4c35-b476-816a5fb0fbf8" />
+
+
 ### 8. Network Reconnaissance
+
+Mapping infrastructure
+
+```kql
+HuntData
+| where AccountName == "s.brandt"
+| where isnotempty(DnsQueryString)
+| distinct DnsQueryString
+```
+
+<img width="229" height="111" alt="Screenshot 2026-05-21 092926" src="https://github.com/user-attachments/assets/ff13e3da-e8e3-4b64-8063-830ff420fd25" />
+
 
 ### 9. First Credential Activity
 
