@@ -280,30 +280,137 @@ HuntData
 
 ### 22. Network Configuration Change
 
+```kql
+HuntData
+| where DeviceName == "WS-ENG04"
+| where ProcessCommandLine has "netsh"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="981" height="134" alt="Screenshot 2026-05-22 155525" src="https://github.com/user-attachments/assets/b6b39df6-89e9-4c2a-b8fa-4f0556ff9b57" />
+
+
 ### 23. Configuration Storage
+
+```kql
+HuntData
+| where DeviceName == "WS-ENG04"
+| where MdeTable == "DeviceRegistryEvents"
+| where InitiatingProcessFileName == "netsh.exe"
+| project EventTime, RegistryKey
+```
+
+<img width="606" height="62" alt="Screenshot 2026-05-22 155731" src="https://github.com/user-attachments/assets/8709d3d7-82d0-4f5a-a280-2740a49f0eeb" />
+
 
 ### 24. Matching Configuration on DC
 
+```kql
+HuntData
+| where DeviceName == "SRV-DC01"
+| where ProcessCommandLine has "netsh"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="993" height="87" alt="Screenshot 2026-05-22 155822" src="https://github.com/user-attachments/assets/f772db58-d958-4bf6-87c6-db3892b1b88b" />
+
+
 ### 25. Targeted Directory
+
+C:\Engineering\Avionics\A400M_NavSys\
+
+```kql
+HuntData
+| where DeviceName == "SRV-FILES02"
+| where AccountName == "m.richter"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="1049" height="106" alt="Screenshot 2026-05-22 160031" src="https://github.com/user-attachments/assets/59401104-461f-434b-9e9f-f3aaab06d818" />
+
 
 ### 26. Packaged Output
 
+win_update_kb5034.zip
+
 ### 27. Compression Method
+
+Compress-Archive
 
 ### 28. Format Conversion
 
+certutil
+
+<img width="815" height="89" alt="Screenshot 2026-05-22 160746" src="https://github.com/user-attachments/assets/55b6140c-5830-42a1-8328-839f535b0b8f" />
+
+
 ### 29. Outbound Transfer
+
+```kql
+HuntData
+| where DeviceName == "WS-ENG04"
+| where AccountName == "s.brandt"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="1140" height="50" alt="Screenshot 2026-05-22 160957" src="https://github.com/user-attachments/assets/2823b121-90f2-4847-b7fb-41682740de6c" />
+
 
 ### 30. External Destination
 
+cdn-telemetry.cloud-endpoint.net
+
 ### 31. Reentry Window
+
+<img width="771" height="24" alt="Screenshot 2026-05-22 161136" src="https://github.com/user-attachments/assets/6939e316-1770-49f3-9ec4-3bf73789bb92" />
+
 
 ### 32. First Cleanup Action
 
+```kql
+HuntData
+| where DeviceName == "WS-ENG04"
+| where AccountName == "s.brandt"
+| where ProcessCommandLine has "cl"
+| project EventTime, ProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="1095" height="138" alt="Screenshot 2026-05-22 162054" src="https://github.com/user-attachments/assets/420fe41c-270e-44ef-a059-c7157209c9d4" />
+
+
+
 ### 34. Clearing Method Analysis
+
+```kql
+HuntData
+| where DeviceName == "SRV-DC01"
+| where AccountName == "m.richter"
+| where ProcessCommandLine has "cl"
+| project EventTime, ProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="603" height="139" alt="Screenshot 2026-05-22 162154" src="https://github.com/user-attachments/assets/d32f3128-dc88-4baf-9e49-8bdf8550e62d" />
+
+
+```kql
+HuntData
+| where DeviceName == "SRV-FILES02"
+| where AccountName == "m.richter"
+| where ProcessCommandLine has "cl"
+| project EventTime, ProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="599" height="139" alt="Screenshot 2026-05-22 162210" src="https://github.com/user-attachments/assets/53e1f209-512d-4a19-bf40-203199804b80" />
+
 
 ### 35. Exfiltration Confidence Call
 
+HIGH. C:\Engineering\Avionics\A400M_NavSys\ was compressed into win_update_kb5034.zip, encoded via certutil to a base64 file, and POSTed to cdn-telemetry.cloud-endpoint.net.
+
 ### 36. DC Staging Cleanup
 
+<img width="532" height="50" alt="Screenshot 2026-05-22 162459" src="https://github.com/user-attachments/assets/4e3d8e23-8d45-49be-a988-9c2788ab7083" />
+
 ### 37. CISO Brief
+
+Accounts s.brandt and m.richter as well as hosts WS-ENG04, SRV-DC01, and SRV-FILES02 were compromised. The targeted data was located in 'C:\Engineering\Avionics\A400M_NavSys\' which was zipped and POSTed to cdn-telemetry.cloud-endpoint.net. The attackers achieved persistence by editing the registry to set up port forwarding through credential resets. The compromised hosts should be isolated from the network immediately.
