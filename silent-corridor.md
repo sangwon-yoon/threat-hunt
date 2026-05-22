@@ -124,11 +124,51 @@ HuntData
 
 ### 9. First Credential Activity
 
+```kql
+HuntData
+| where AccountName == "s.brandt"
+| where DeviceName  == "WS-ENG04"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="457" height="54" alt="Screenshot 2026-05-22 125050" src="https://github.com/user-attachments/assets/2646c9ba-e294-44ce-9e15-4eec782a1e8f" />
+
+
 ### 10. Credential Dump Outcome
+
+```kql
+HuntData
+| where EventTime startswith "2026-02-26"
+| where FileName == "rundll32.exe" or FolderPath startswith "C:\\Windows\\Temp"
+| project EventTime, ActionType, FileName, FolderPath, ProcessCommandLine
+```
+
+<img width="1401" height="143" alt="Screenshot 2026-05-22 131144" src="https://github.com/user-attachments/assets/adf7c714-1ca1-481e-b051-a4f969d36240" />
+
 
 ### 11. Stored Credential Source
 
+```kql
+HuntData
+| where FileName == "reg.exe" and ProcessCommandLine has "save"
+| project EventTime, FileName, ProcessCommandLine
+```
+
+<img width="725" height="84" alt="Screenshot 2026-05-22 131527" src="https://github.com/user-attachments/assets/76da0561-9493-4cd1-9c2c-96be17bcc8d5" />
+
+
 ### 12. Saved Credentials
+
+```kql
+HuntData
+| where AccountName == "s.brandt"
+| where DeviceName  == "WS-ENG04"
+| where ProcessCommandLine has "list"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="736" height="111" alt="Screenshot 2026-05-22 131748" src="https://github.com/user-attachments/assets/b2d5a0c7-cec4-4372-a0ff-c57f11c45411" />
+
 
 ### 13. First Lateral Pivot
 
