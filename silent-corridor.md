@@ -172,21 +172,111 @@ HuntData
 
 ### 13. First Lateral Pivot
 
+```kql
+HuntData
+| where AccountName == "s.brandt"
+| where DeviceName  == "WS-ENG04"
+| project EventTime, ProcessCommandLine
+```
+
+<img width="565" height="47" alt="Screenshot 2026-05-22 132158" src="https://github.com/user-attachments/assets/fa72cd15-b48e-43fd-8f5b-b125ee96ed9c" />
+
+```kql
+HuntData
+| where MdeTable == "FortiGateVPN"
+| where EventTime startswith "2026-02-28"
+| project EventTime, TunnelIP
+```
+
+<img width="302" height="48" alt="Screenshot 2026-05-22 133012" src="https://github.com/user-attachments/assets/6b162e1b-c30f-4cf1-bb9a-58b36fb468ef" />
+
+
 ### 14. New Account Observed
+
+m.richter
 
 ### 15. Cross-Host Spawning
 
+```kql
+HuntData
+| where ProcessCommandLine has "/node:"
+| project EventTime, FileName, ProcessCommandLine
+```
+
+<img width="1256" height="224" alt="Screenshot 2026-05-22 133650" src="https://github.com/user-attachments/assets/f89c8063-0bdd-43db-ab7c-30582b5c76ca" />
+
+
 ### 16. New Filesystem Activity
+
+```kql
+HuntData
+| where DeviceName == "SRV-DC01"
+| where ActionType == "FileCreated"
+| where FolderPath startswith "C:\\Windows\\Temp"
+| project FileName, FolderPath
+```
+
+<img width="521" height="164" alt="Screenshot 2026-05-22 134132" src="https://github.com/user-attachments/assets/9a685ef4-b25f-47fa-b3f8-b3cdf1fd5690" />
+
 
 ### 17. Critical File
 
+```kql
+HuntData
+| where FileName == "ntds.dit"
+| project FileName, InitiatingProcessAccountName
+```
+
+<img width="393" height="54" alt="Screenshot 2026-05-22 134327" src="https://github.com/user-attachments/assets/73fc3228-4a29-43c7-add8-5dfcb7c14924" />
+
+
 ### 18. Concurrent File Access
+
+```kql
+HuntData
+| where FileName == "ntds.dit"
+| project FileName, InitiatingProcessFileName
+```
+
+<img width="368" height="84" alt="Screenshot 2026-05-22 134443" src="https://github.com/user-attachments/assets/179169d7-936b-4b8f-b29b-ecfcc7c56f76" />
+
 
 ### 19. Database File Access
 
+```kql
+HuntData
+| where DeviceName == "SRV-DC01"
+| where AccountName == "m.richter"
+| where ProcessCommandLine has "McAfee"
+| project EventTime, FileName, ProcessCommandLine
+```
+
+<img width="849" height="113" alt="Screenshot 2026-05-22 134808" src="https://github.com/user-attachments/assets/ebf02be8-86ed-4e9b-a688-b9f554b488a6" />
+
+
 ### 20. Spawning Source
 
+```kql
+HuntData
+| where DeviceName == "SRV-DC01"
+| where AccountName == "m.richter"
+| project EventTime, FileName, ProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="813" height="80" alt="Screenshot 2026-05-22 135348" src="https://github.com/user-attachments/assets/e308902a-5086-4437-89fe-5a2ad616c9f8" />
+
+
 ### 21. RDP Scope
+
+```kql
+HuntData
+| where MdeTable == "DeviceNetworkEvents"
+| where RemoteIP == "10.1.96.114"
+| distinct DeviceName
+```
+
+<img width="117" height="110" alt="Screenshot 2026-05-22 135859" src="https://github.com/user-attachments/assets/e0cff4ae-4140-45c5-b391-6e17f2168001" />
+
 
 ### 22. Network Configuration Change
 
