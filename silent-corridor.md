@@ -1,8 +1,13 @@
-## Operation: Silent Corridor
+# Operation: Silent Corridor
 
 BfV (German federal intelligence) has issued a confidential advisory to defence sector organisations. A state-sponsored actor designated GREY VEIL has been conducting intrusions against European aerospace and defence contractors since late 2025. Their primary objectives are intellectual property theft and persistent access to engineering networks. Previous victims reported extended dwell times before detection.
 
 Haldric Aerospace is a Tier 2 defence contractor specialising in avionics navigation systems for European military programmes. Engineering staff work from a dedicated network segment with remote access via SSL VPN. The company employs approximately 200 staff across three sites.
+
+## Platforms and Languages Leveraged
+
+* Log Analytics Workspace
+* Kusto Query Language (KQL)
 
 ## Timeline & Queries Used
 
@@ -379,7 +384,7 @@ HuntData
 
 
 
-### 34. Clearing Method Analysis
+### 33. Clearing Method Analysis
 
 ```kql
 HuntData
@@ -402,6 +407,9 @@ HuntData
 
 <img width="599" height="139" alt="Screenshot 2026-05-22 162210" src="https://github.com/user-attachments/assets/53e1f209-512d-4a19-bf40-203199804b80" />
 
+### 34. Surviving Log Source
+
+Sysmon
 
 ### 35. Exfiltration Confidence Call
 
