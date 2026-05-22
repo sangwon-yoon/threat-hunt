@@ -4,6 +4,8 @@ BfV (German federal intelligence) has issued a confidential advisory to defence 
 
 Haldric Aerospace is a Tier 2 defence contractor specialising in avionics navigation systems for European military programmes. Engineering staff work from a dedicated network segment with remote access via SSL VPN. The company employs approximately 200 staff across three sites.
 
+This is a proactive hunt. There are no alerts. No indicators of compromise have been provided. You are hunting based on the advisory alone. Determine whether GREY VEIL has accessed Haldric Aerospace infrastructure. If they have, scope the full extent of the compromise.
+
 ## Platforms and Languages Leveraged
 
 * Log Analytics Workspace
