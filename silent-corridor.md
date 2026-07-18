@@ -54,6 +54,8 @@ HuntData
 
 ### 3. Connection Footprint
 
+s.brandt attempted to log in from 4 different remote IPs.
+
 ```kql
 HuntData
 | where MdeTable == "FortiGateVPN"
@@ -64,6 +66,8 @@ HuntData
 <img width="119" height="53" alt="Screenshot 2026-05-19 190928" src="https://github.com/user-attachments/assets/6172ebbb-3071-44af-8f4f-80a8deda640c" />
 
 ### 4. Source Address Inventory
+
+These were the IPs.
 
 ```kql
 HuntData
@@ -76,6 +80,8 @@ HuntData
 <img width="136" height="133" alt="Screenshot 2026-05-19 191712" src="https://github.com/user-attachments/assets/12688473-9757-4e07-a794-f2c8fb21dd34" />
 
 ### 5. Internal Landing Point
+
+The host landed on WS-ENG04.
 
 ```kql
 HuntData
@@ -117,7 +123,7 @@ HuntData
 
 ### 8. Network Reconnaissance
 
-Mapping infrastructure
+Mapping infrastructure.
 
 ```kql
 HuntData
@@ -131,6 +137,8 @@ HuntData
 
 ### 9. First Credential Activity
 
+This is the first attempt to obtain more credentials.
+
 ```kql
 HuntData
 | where AccountName == "s.brandt"
@@ -142,6 +150,8 @@ HuntData
 
 
 ### 10. Credential Dump Outcome
+
+The credential dump was unsuccessful, but it was not blocked by any process.
 
 ```kql
 HuntData
@@ -155,6 +165,8 @@ HuntData
 
 ### 11. Stored Credential Source
 
+Next, they went after the SAM registry hive.
+
 ```kql
 HuntData
 | where FileName == "reg.exe" and ProcessCommandLine has "save"
@@ -165,6 +177,8 @@ HuntData
 
 
 ### 12. Saved Credentials
+
+They used cmdkey /list to list saved credentials.
 
 ```kql
 HuntData
@@ -178,6 +192,8 @@ HuntData
 
 
 ### 13. First Lateral Pivot
+
+They pivoted to another user m.richter on host SRV-DC01.
 
 ```kql
 HuntData
@@ -200,9 +216,11 @@ HuntData
 
 ### 14. New Account Observed
 
-m.richter
+m.richter is the username of the stolen account.
 
 ### 15. Cross-Host Spawning
+
+Filtering ProcessCommandLine for the /node: pattern revealed that they were using WMIC.
 
 ```kql
 HuntData
@@ -214,6 +232,8 @@ HuntData
 
 
 ### 16. New Filesystem Activity
+
+Checking file creations on the compromised host revealed that the attacker created a folder named "McAfee_Logs" in Temp.
 
 ```kql
 HuntData
@@ -228,6 +248,8 @@ HuntData
 
 ### 17. Critical File
 
+A file called ntds.dit was written into this directory by m.richter.
+
 ```kql
 HuntData
 | where FileName == "ntds.dit"
@@ -239,6 +261,8 @@ HuntData
 
 ### 18. Concurrent File Access
 
+The file was accessed by MsMpEng.exe but it did not act.
+
 ```kql
 HuntData
 | where FileName == "ntds.dit"
@@ -249,6 +273,8 @@ HuntData
 
 
 ### 19. Database File Access
+
+The attacker used ntdsutil to get a copy of the locked file.
 
 ```kql
 HuntData
@@ -263,6 +289,8 @@ HuntData
 
 ### 20. Spawning Source
 
+The attacker used WmiPrvSE.exe from WS-ENG04 to execute commands remotely on SRV-DC01.
+
 ```kql
 HuntData
 | where DeviceName == "SRV-DC01"
@@ -274,6 +302,8 @@ HuntData
 
 
 ### 21. RDP Scope
+
+They also reached SRV-FILES02 via this method.
 
 ```kql
 HuntData
@@ -287,6 +317,8 @@ HuntData
 
 ### 22. Network Configuration Change
 
+netsh was used to open a port to achieve persistence.
+
 ```kql
 HuntData
 | where DeviceName == "WS-ENG04"
@@ -298,6 +330,8 @@ HuntData
 
 
 ### 23. Configuration Storage
+
+The changed was stored here to survive reboots.
 
 ```kql
 HuntData
@@ -312,6 +346,8 @@ HuntData
 
 ### 24. Matching Configuration on DC
 
+The same change was made on other hosts.
+
 ```kql
 HuntData
 | where DeviceName == "SRV-DC01"
@@ -324,7 +360,7 @@ HuntData
 
 ### 25. Targeted Directory
 
-C:\Engineering\Avionics\A400M_NavSys\
+The attacker went after C:\Engineering\Avionics\A400M_NavSys\
 
 ```kql
 HuntData
@@ -338,20 +374,22 @@ HuntData
 
 ### 26. Packaged Output
 
-win_update_kb5034.zip
+The output was packaged as win_update_kb5034.zip.
 
 ### 27. Compression Method
 
-Compress-Archive
+The attacker packaged the output with Compress-Archive.
 
 ### 28. Format Conversion
 
-certutil
+The format was converted with certutil.
 
 <img width="815" height="89" alt="Screenshot 2026-05-22 160746" src="https://github.com/user-attachments/assets/55b6140c-5830-42a1-8328-839f535b0b8f" />
 
 
 ### 29. Outbound Transfer
+
+The file was extracted via a POST command to https://cdn-telemetry.cloud-endpoint.net.
 
 ```kql
 HuntData
@@ -365,14 +403,18 @@ HuntData
 
 ### 30. External Destination
 
-cdn-telemetry.cloud-endpoint.net
+The destination was cdn-telemetry.cloud-endpoint.net.
 
 ### 31. Reentry Window
+
+They returned after 2 days.
 
 <img width="771" height="24" alt="Screenshot 2026-05-22 161136" src="https://github.com/user-attachments/assets/6939e316-1770-49f3-9ec4-3bf73789bb92" />
 
 
 ### 32. First Cleanup Action
+
+Their first cleanup action was clearing Security logs with wevtutil cl Security.
 
 ```kql
 HuntData
@@ -387,6 +429,8 @@ HuntData
 
 
 ### 33. Clearing Method Analysis
+
+WS-ENG04 and SRV-DC01 were cleared locally, SRV-FILES02 was cleared remotely.
 
 ```kql
 HuntData
@@ -411,13 +455,15 @@ HuntData
 
 ### 34. Surviving Log Source
 
-Sysmon
+The attackers did not clear Sysmon logs.
 
 ### 35. Exfiltration Confidence Call
 
 HIGH. C:\Engineering\Avionics\A400M_NavSys\ was compressed into win_update_kb5034.zip, encoded via certutil to a base64 file, and POSTed to cdn-telemetry.cloud-endpoint.net.
 
 ### 36. DC Staging Cleanup
+
+cmd.exe /c rmdir /s /q C:\Windows\Temp\McAfee_Logs was used to remove the staging directory.
 
 <img width="532" height="50" alt="Screenshot 2026-05-22 162459" src="https://github.com/user-attachments/assets/4e3d8e23-8d45-49be-a988-9c2788ab7083" />
 
